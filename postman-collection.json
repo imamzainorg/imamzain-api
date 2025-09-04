@@ -1,0 +1,1466 @@
+{
+  "info": {
+    "name": "ImamZain API v2",
+    "description": "Complete API collection for ImamZain API v2",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "lang",
+      "value": "en",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "App",
+      "item": [
+        {
+          "name": "Get Hello",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": ["{{baseUrl}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"New User\",\n  \"roles\": [\"USER\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/1/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update User Roles",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\"USER\", \"ADMIN\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/1/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1", "roles"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated User Name\",\n  \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Public Articles",
+          "item": [
+            {
+              "name": "Get All Articles (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/articles?page=1&limit=10&categoryId=1&search=example",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "articles"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Article by ID (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/articles/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "articles", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Article by Slug (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/articles/slug/example-article",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "articles", "slug", "example-article"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Private Articles",
+          "item": [
+            {
+              "name": "Get All Articles (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/articles?page=1&limit=10&categoryId=1&search=example",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Article by ID (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "1"]
+                }
+              }
+            },
+            {
+              "name": "Create Article",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"New Article\",\n  \"slug\": \"new-article\",\n  \"content\": \"Article content here\",\n  \"excerpt\": \"Article excerpt\",\n  \"language\": \"en\",\n  \"categoryId\": 1,\n  \"isPublished\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/articles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles"]
+                }
+              }
+            },
+            {
+              "name": "Update Article",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Article Title\",\n  \"content\": \"Updated content\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/articles/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Article",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Article by Slug (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/slug/example-article",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "slug", "example-article"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Public Books",
+          "item": [
+            {
+              "name": "Get All Books (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/books?page=1&limit=10&categoryId=1&search=example",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "books"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Book by ID (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/books/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "books", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Book by Slug (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/books/slug/example-book",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "books", "slug", "example-book"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Private Books",
+          "item": [
+            {
+              "name": "Get All Books (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/books?page=1&limit=10&categoryId=1&search=example",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Book by ID (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/books/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books", "1"]
+                }
+              }
+            },
+            {
+              "name": "Create Book",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"New Book\",\n  \"slug\": \"new-book\",\n  \"content\": \"Book content here\",\n  \"excerpt\": \"Book excerpt\",\n  \"language\": \"en\",\n  \"categoryId\": 1,\n  \"isPublished\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/books",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books"]
+                }
+              }
+            },
+            {
+              "name": "Update Book",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Book Title\",\n  \"content\": \"Updated content\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/books/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Book",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/books/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Book by Slug (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/books/slug/example-book",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["books", "slug", "example-book"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Public Categories",
+          "item": [
+            {
+              "name": "Get All Categories (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/categories?page=1&limit=10&model=ARTICLE",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "categories"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "model",
+                      "value": "ARTICLE"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Category by ID (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/categories/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "categories", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Category by Slug (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/categories/slug/example-category",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "categories", "slug", "example-category"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Private Categories",
+          "item": [
+            {
+              "name": "Get All Categories (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories?page=1&limit=10&model=ARTICLE",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "model",
+                      "value": "ARTICLE"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Category by ID (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories", "1"]
+                }
+              }
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"New Category\",\n  \"slug\": \"new-category\",\n  \"description\": \"Category description\",\n  \"language\": \"en\",\n  \"model\": \"ARTICLE\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories"]
+                }
+              }
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Category Name\",\n  \"description\": \"Updated description\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/categories/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Category by Slug (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/categories/slug/example-category",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["categories", "slug", "example-category"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Public Tags",
+          "item": [
+            {
+              "name": "Get All Tags (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/tags?page=1&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "tags"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Tag by ID (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/tags/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "tags", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Tag by Slug (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/tags/slug/example-tag",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "tags", "slug", "example-tag"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Private Tags",
+          "item": [
+            {
+              "name": "Get All Tags (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags?page=1&limit=10",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Tag by ID (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags", "1"]
+                }
+              }
+            },
+            {
+              "name": "Create Tag",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"New Tag\",\n  \"slug\": \"new-tag\",\n  \"description\": \"Tag description\",\n  \"language\": \"en\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags"]
+                }
+              }
+            },
+            {
+              "name": "Update Tag",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Tag Name\",\n  \"description\": \"Updated description\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tags/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Tag",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Tag by Slug (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tags/slug/example-tag",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["tags", "slug", "example-tag"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Research",
+      "item": [
+        {
+          "name": "Public Research",
+          "item": [
+            {
+              "name": "Get All Research (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/research?page=1&limit=10&categoryId=1&search=example&year=2024&dateFrom=2024-01-01",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "research"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "2024-01-01"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Research by ID (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/research/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "research", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Research by Slug (Public)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/{{lang}}/research/slug/example-research",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["{{lang}}", "research", "slug", "example-research"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Private Research",
+          "item": [
+            {
+              "name": "Get All Research (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/research?page=1&limit=10&categoryId=1&search=example&year=2024&dateFrom=2024-01-01",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "example"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2024"
+                    },
+                    {
+                      "key": "dateFrom",
+                      "value": "2024-01-01"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Research by ID (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/research/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research", "1"]
+                }
+              }
+            },
+            {
+              "name": "Create Research",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"New Research\",\n  \"slug\": \"new-research\",\n  \"abstract\": \"Research abstract\",\n  \"content\": \"Research content here\",\n  \"language\": \"en\",\n  \"categoryId\": 1,\n  \"year\": \"2024\",\n  \"isPublished\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/research",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research"]
+                }
+              }
+            },
+            {
+              "name": "Update Research",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Research Title\",\n  \"abstract\": \"Updated abstract\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/research/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Research",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/research/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research", "1"]
+                }
+              }
+            },
+            {
+              "name": "Get Research by Slug (Private)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/research/slug/example-research",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["research", "slug", "example-research"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Attachments",
+      "item": [
+        {
+          "name": "Create Attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filename\": \"example.pdf\",\n  \"originalName\": \"Example Document.pdf\",\n  \"mimeType\": \"application/pdf\",\n  \"size\": 1024000,\n  \"path\": \"/uploads/documents/example.pdf\",\n  \"collection\": \"documents\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/attachments",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments"]
+            }
+          }
+        },
+        {
+          "name": "Upload File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "collection",
+                  "value": "documents",
+                  "type": "text"
+                },
+                {
+                  "key": "altText",
+                  "value": "Example document",
+                  "type": "text"
+                },
+                {
+                  "key": "metadata",
+                  "value": "{\"category\": \"document\", \"tags\": [\"example\"]}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/attachments/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments", "upload"]
+            }
+          }
+        },
+        {
+          "name": "Get All Attachments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/attachments?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Serve File",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attachments/file/documents/example.pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments", "file", "documents", "example.pdf"]
+            }
+          }
+        },
+        {
+          "name": "Get Attachment by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/attachments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Attachment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"altText\": \"Updated alt text\",\n  \"metadata\": {\"category\": \"updated\", \"tags\": [\"updated\"]}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/attachments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/attachments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["attachments", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

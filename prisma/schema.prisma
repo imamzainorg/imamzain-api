@@ -1,0 +1,417 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+//
+// ── ENUMS ─────────────────────────────────────────────────────────────────────
+//
+
+enum ModelType {
+  ARTICLE
+  RESEARCH
+  BOOK
+}
+
+//
+// ── AUTH & ACL MODELS ─────────────────────────────────────────────────────────
+//
+
+model User {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  activityLogs  ActivityLog[]
+  roles         UserRole[]
+  groups        GroupMember[]
+  refreshTokens RefreshToken[]
+}
+
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  action    String
+  tableName String
+  recordId  Int?
+  changes   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Role {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+}
+
+model Permission {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+
+  rolePermissions  RolePermission[]
+  groupPermissions GroupPermission[]
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  role   Role @relation(fields: [roleId], references: [id])
+  roleId Int
+
+  @@unique([userId, roleId])
+}
+
+model Group {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+
+  members          GroupMember[]
+  groupPermissions GroupPermission[]
+}
+
+model GroupMember {
+  id      Int   @id @default(autoincrement())
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+  user    User  @relation(fields: [userId], references: [id])
+  userId  Int
+
+  @@unique([groupId, userId])
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  role         Role       @relation(fields: [roleId], references: [id])
+  roleId       Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId Int
+
+  @@unique([roleId, permissionId])
+}
+
+model GroupPermission {
+  id           Int        @id @default(autoincrement())
+  group        Group      @relation(fields: [groupId], references: [id])
+  groupId      Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId Int
+
+  @@unique([groupId, permissionId])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+}
+
+//
+// ── LANGUAGE SYSTEM ───────────────────────────────────────────────────────────
+//
+
+model Language {
+  code       String  @id
+  name       String
+  nativeName String
+  isActive   Boolean @default(true)
+
+  articleTranslations  ArticleTranslation[]
+  researchTranslations ResearchTranslation[]
+  bookTranslations     BookTranslation[]
+  categoryTranslations CategoryTranslation[]
+  tagTranslations      TagTranslation[]
+}
+
+//
+// ── ATTACHMENTS SYSTEM ────────────────────────────────────────────────────────
+//
+
+model Attachments {
+  id           Int      @id @default(autoincrement())
+  originalName String
+  fileName     String
+  path         String
+  mimeType     String
+  size         Int
+  altText      String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Main image relations
+  articlesAsMainImage Article[]
+
+  // Cover relations
+  booksAsCover Book[] @relation("BookCover")
+
+  // File relations
+  researchesAsFile Research[] @relation("ResearchFile")
+  booksAsFile      Book[]     @relation("BookFile")
+
+  // Additional attachments relations
+  articleAttachments ArticleAttachments[]
+}
+
+//
+// ── TAGS SYSTEM ───────────────────────────────────────────────────────────────
+//
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  translations TagTranslation[]
+  articles     ArticleTag[]
+  researches   ResearchTag[]
+  books        BookTag[]
+
+  @@index([slug])
+}
+
+model TagTranslation {
+  id           Int     @id @default(autoincrement())
+  tagId        Int
+  languageCode String
+  isDefault    Boolean @default(false)
+  name         String
+
+  tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code])
+
+  @@unique([tagId, languageCode])
+}
+
+//
+// ── UNIFIED CATEGORY SYSTEM ───────────────────────────────────────────────────
+//
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  slug      String    @unique
+  model     ModelType
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  articles     Article[]
+  researches   Research[]
+  books        Book[]
+  translations CategoryTranslation[]
+
+  @@index([model])
+}
+
+model CategoryTranslation {
+  id           Int     @id @default(autoincrement())
+  categoryId   Int
+  languageCode String
+  isDefault    Boolean @default(false)
+  name         String
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code])
+
+  @@unique([categoryId, languageCode])
+}
+
+//
+// ── ARTICLE SYSTEM ────────────────────────────────────────────────────────────
+//
+
+model Article {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  views       Int       @default(0)
+  publishedAt DateTime?
+  isPublished Boolean   @default(false)
+  categoryId  Int
+  mainImageId Int? // New field for main image
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  category     Category             @relation(fields: [categoryId], references: [id])
+  mainImage    Attachments?         @relation(fields: [mainImageId], references: [id])
+  translations ArticleTranslation[]
+  attachments  ArticleAttachments[]
+  tags         ArticleTag[]
+}
+
+model ArticleTranslation {
+  id           Int     @id @default(autoincrement())
+  articleId    Int
+  languageCode String
+  isDefault    Boolean @default(false)
+  title        String
+  summary      String?
+  body         String
+
+  article  Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code])
+
+  @@unique([articleId, languageCode])
+}
+
+model ArticleAttachments {
+  id            Int @id @default(autoincrement())
+  articleId     Int
+  attachmentsId Int
+
+  article    Article     @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  attachment Attachments @relation(fields: [attachmentsId], references: [id])
+
+  @@unique([articleId, attachmentsId])
+}
+
+model ArticleTag {
+  id        Int @id @default(autoincrement())
+  articleId Int
+  tagId     Int
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, tagId])
+}
+
+//
+// ── RESEARCH SYSTEM ───────────────────────────────────────────────────────────
+//
+
+model Research {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  publishedAt DateTime? @db.Date
+  views       Int       @default(0)
+  pages       Int?
+  isPublished Boolean   @default(false)
+  categoryId  Int
+  fileId      Int? // Single research file (PDF, etc.)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  category     Category              @relation(fields: [categoryId], references: [id])
+  file         Attachments?          @relation("ResearchFile", fields: [fileId], references: [id])
+  translations ResearchTranslation[]
+  tags         ResearchTag[]
+}
+
+model ResearchTranslation {
+  id              Int     @id @default(autoincrement())
+  researchId      Int
+  languageCode    String
+  isDefault       Boolean @default(false)
+  title           String
+  abstract        String?
+  authors         String?
+  metaTitle       String?
+  metaDescription String?
+
+  research Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code])
+
+  @@unique([researchId, languageCode])
+}
+
+model ResearchTag {
+  id         Int @id @default(autoincrement())
+  researchId Int
+  tagId      Int
+
+  research Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  tag      Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([researchId, tagId])
+}
+
+//
+// ── BOOK SYSTEM ───────────────────────────────────────────────────────────────
+//
+
+model Book {
+  id           Int      @id @default(autoincrement())
+  slug         String   @unique
+  isbn         String?
+  pages        Int?
+  views        Int      @default(0)
+  partNumber   Int?
+  totalParts   Int?
+  publishYear  String?
+  isPublished  Boolean  @default(false)
+  categoryId   Int
+  coverId      Int? // Book cover image
+  fileId       Int? // Single book file (PDF, etc.)
+  parentBookId Int? // Self-relation for book parts
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  category Category     @relation(fields: [categoryId], references: [id])
+  cover    Attachments? @relation("BookCover", fields: [coverId], references: [id])
+  file     Attachments? @relation("BookFile", fields: [fileId], references: [id])
+
+  // Self-relation for book parts
+  parentBook Book?  @relation("BookParts", fields: [parentBookId], references: [id])
+  parts      Book[] @relation("BookParts")
+
+  translations BookTranslation[]
+  tags         BookTag[]
+}
+
+model BookTranslation {
+  id              Int     @id @default(autoincrement())
+  bookId          Int
+  languageCode    String
+  isDefault       Boolean @default(false)
+  title           String
+  author          String?
+  publisher       String?
+  description     String?
+  series          String?
+  metaTitle       String?
+  metaDescription String?
+
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code])
+
+  @@unique([bookId, languageCode])
+}
+
+model BookTag {
+  id     Int @id @default(autoincrement())
+  bookId Int
+  tagId  Int
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, tagId])
+}
