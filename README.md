@@ -1,98 +1,493 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Imam Zain API v2
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A comprehensive multilingual content management REST API built with NestJS, featuring articles, research papers, and books with full internationalization support.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- 🌍 **Multilingual Content**: Full i18n support with translation tables
+- 🔐 **Authentication & Authorization**: JWT-based auth with role-based access control (RBAC)
+- 📚 **Content Management**: Articles, research papers, and books with rich metadata
+- 📎 **File Management**: Upload and serve images, documents, and media files
+- 🏷️ **Tagging & Categorization**: Flexible tagging and category system
+- 📊 **Activity Logging**: Complete audit trail of user activities
+- 🔍 **Search & Pagination**: Full-text search with paginated results
+- 📝 **Validation**: Comprehensive input validation and error handling
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Quick Start
 
-## Project setup
+### Prerequisites
+
+- Node.js (v16 or higher)
+- PostgreSQL database
+- npm or yarn
+
+### Installation
 
 ```bash
-$ npm install
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials and other settings
+
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+
+# Seed the database (optional)
+npm run db:seed
 ```
 
-## Compile and run the project
+### Running the Application
 
 ```bash
-# development
-$ npm run start
+# Development mode with hot reload
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
+# Production mode
+npm run start:prod
 
-# production mode
-$ npm run start:prod
+# Debug mode
+npm run start:debug
 ```
 
-## Run tests
+The API will be available at `http://localhost:3001/api`
+
+### Testing
 
 ```bash
-# unit tests
-$ npm run test
+# Unit tests
+npm run test
 
-# e2e tests
-$ npm run test:e2e
+# Watch mode
+npm run test:watch
 
-# test coverage
-$ npm run test:cov
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Code Quality
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Lint and fix code
+npm run lint
+
+# Format code
+npm run format
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Environment Variables
 
-## Resources
+Create a `.env` file in the root directory with the following variables:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/imamzain_db"
+DIRECT_URL="postgresql://user:password@localhost:5432/imamzain_db"
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Application
+PORT=3001
+NODE_ENV=development
+API_PREFIX=api
 
-## Support
+# JWT
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=15m
+REFRESH_TOKEN_EXPIRES_IN=7d
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# CORS
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:3002
 
-## Stay in touch
+# File Upload
+UPLOAD_DIR=./uploads
+MAX_FILE_SIZE=10485760
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## API Documentation
+
+### Base URL
+
+All API endpoints are prefixed with `/api`. For example: `http://localhost:3001/api/auth/login`
+
+### Response Format
+
+All API responses follow a consistent format:
+
+```json
+{
+  "status": "success" | "error",
+  "message": "Human readable message",
+  "errors": null | ["error details"],
+  "data": {} | [] | null,
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 100,
+    "totalPages": 10
+  }
+}
+```
+
+### Authentication
+
+The API uses JWT tokens for authentication. After login, you'll receive:
+- An `accessToken` for API requests (expires in 15 minutes)
+- A `refreshToken` stored as HTTP-only cookie (expires in 7 days)
+
+#### Authentication Endpoints
+
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+```http
+POST /api/auth/refresh
+# Refresh token is automatically read from cookie
+```
+
+```http
+POST /api/auth/logout
+Authorization: Bearer <access_token>
+```
+
+### Protected Routes
+
+Include the JWT token in the Authorization header:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+### Content Management
+
+The API manages three main content types: Articles, Research, and Books. Each supports multiple languages and has both public and private endpoints.
+
+#### Articles
+
+**Public Endpoints (no authentication required):**
+
+```http
+# Get articles in specific language with pagination
+GET /api/{lang}/articles?page=1&limit=10&categoryId=1&search=query
+
+# Get article by ID
+GET /api/{lang}/articles/{id}
+
+# Get article by slug
+GET /api/{lang}/articles/slug/{slug}
+```
+
+**Private Endpoints (authentication required):**
+
+```http
+# Get all articles (all languages)
+GET /api/articles?page=1&limit=10&categoryId=1&search=query
+
+# Get article with all translations
+GET /api/articles/{id}
+
+# Create new article
+POST /api/articles
+Content-Type: application/json
+
+{
+  "slug": "my-article",
+  "categoryId": 1,
+  "mainImageId": 123,
+  "translations": [
+    {
+      "languageCode": "en",
+      "isDefault": true,
+      "title": "Article Title",
+      "summary": "Brief summary",
+      "body": "Article content..."
+    }
+  ],
+  "tagIds": [1, 2, 3],
+  "attachmentIds": [456, 789]
+}
+
+# Update article
+PATCH /api/articles/{id}
+
+# Delete article
+DELETE /api/articles/{id}
+```
+
+#### Research Papers
+
+Similar structure to articles, with additional fields for academic metadata:
+
+```http
+# Public research endpoints
+GET /api/{lang}/research
+GET /api/{lang}/research/{id}
+GET /api/{lang}/research/slug/{slug}
+
+# Private research endpoints
+GET /api/research
+POST /api/research
+PATCH /api/research/{id}
+DELETE /api/research/{id}
+```
+
+Research creation example:
+
+```json
+{
+  "slug": "my-research",
+  "categoryId": 1,
+  "fileId": 123,
+  "publishedAt": "2024-01-01",
+  "pages": 25,
+  "translations": [
+    {
+      "languageCode": "en",
+      "isDefault": true,
+      "title": "Research Title",
+      "abstract": "Research abstract",
+      "authors": "Author Name",
+      "metaTitle": "SEO Title",
+      "metaDescription": "SEO Description"
+    }
+  ],
+  "tagIds": [1, 2]
+}
+```
+
+#### Books
+
+Books support covers, files, and multi-part structure:
+
+```http
+# Public book endpoints
+GET /api/{lang}/books
+GET /api/{lang}/books/{id}
+GET /api/{lang}/books/slug/{slug}
+
+# Private book endpoints
+GET /api/books
+POST /api/books
+PATCH /api/books/{id}
+DELETE /api/books/{id}
+```
+
+Book creation example:
+
+```json
+{
+  "slug": "my-book",
+  "isbn": "978-1234567890",
+  "categoryId": 1,
+  "coverId": 123,
+  "fileId": 456,
+  "pages": 300,
+  "partNumber": 1,
+  "totalParts": 3,
+  "publishYear": "2024",
+  "parentBookId": null,
+  "translations": [
+    {
+      "languageCode": "en",
+      "isDefault": true,
+      "title": "Book Title",
+      "author": "Author Name",
+      "publisher": "Publisher Name",
+      "description": "Book description",
+      "series": "Book Series"
+    }
+  ],
+  "tagIds": [1, 2]
+}
+```
+
+### File Management
+
+#### Upload Files
+
+```http
+POST /api/attachments/upload
+Content-Type: multipart/form-data
+
+file: <file_data>
+collection: "articles" | "research" | "books" | "general"
+altText: "Image description"
+metadata: '{"key": "value"}'
+```
+
+#### Serve Files
+
+```http
+GET /api/attachments/file/{collection}/{filename}
+```
+
+#### Manage Attachments
+
+```http
+# List attachments with pagination
+GET /api/attachments?page=1&limit=10
+
+# Get attachment details
+GET /api/attachments/{id}
+
+# Update attachment metadata
+PATCH /api/attachments/{id}
+
+# Delete attachment
+DELETE /api/attachments/{id}
+```
+
+### Categories & Tags
+
+#### Categories
+
+```http
+# Public categories for specific model type
+GET /api/{lang}/categories?model=ARTICLE
+
+# Private category management
+GET /api/categories
+POST /api/categories
+PATCH /api/categories/{id}
+DELETE /api/categories/{id}
+```
+
+#### Tags
+
+```http
+# Public tags
+GET /api/{lang}/tags
+
+# Private tag management
+GET /api/tags
+POST /api/tags
+PATCH /api/tags/{id}
+DELETE /api/tags/{id}
+```
+
+### User Management
+
+```http
+# List users with pagination
+GET /api/users?page=1&limit=10
+
+# Get user details
+GET /api/users/{id}
+
+# Create user
+POST /api/users
+
+# Update user
+PATCH /api/users/{id}
+
+# Update user status
+PATCH /api/users/{id}/status
+
+# Update user roles
+PUT /api/users/{id}/roles
+
+# Delete user
+DELETE /api/users/{id}
+```
+
+### Supported Languages
+
+The API supports multiple languages through language codes (e.g., `en`, `ar`, `fr`). Use the language code in the URL path for public endpoints to get localized content.
+
+### Error Handling
+
+The API returns appropriate HTTP status codes and error messages:
+
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request (validation errors)
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `500` - Internal Server Error
+
+Error response example:
+
+```json
+{
+  "status": "error",
+  "message": "Validation failed",
+  "errors": [
+    "title is required",
+    "slug must be unique"
+  ],
+  "data": null
+}
+```
+
+## Database Schema
+
+The application uses PostgreSQL with Prisma ORM. Key models include:
+
+- **User Management**: Users, Roles, Permissions, Groups, ActivityLogs
+- **Content**: Articles, Research, Books with translation tables
+- **Media**: Attachments for files, images, and documents
+- **Organization**: Categories (model-specific), Tags (shared)
+- **Internationalization**: Languages, Translation tables
+
+Run `npx prisma studio` to explore the database schema visually.
+
+## Development
+
+### Database Operations
+
+```bash
+# Reset database
+npx prisma migrate reset
+
+# Deploy migrations
+npx prisma migrate deploy
+
+# Generate Prisma client after schema changes
+npx prisma generate
+
+# Open Prisma Studio
+npx prisma studio
+```
+
+### File Structure
+
+```
+src/
+├── auth/           # Authentication module
+├── users/          # User management
+├── articles/       # Article management
+├── research/       # Research paper management
+├── books/          # Book management
+├── categories/     # Category system
+├── tags/           # Tagging system
+├── attachments/    # File management
+├── common/         # Shared utilities
+├── prisma/         # Database service
+├── app.module.ts   # Root module
+└── main.ts         # Application bootstrap
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the UNLICENSED license.
